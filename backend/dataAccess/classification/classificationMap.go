@@ -1,6 +1,6 @@
 package classification
 
-import "github.com/hyperremix/economy-analyzer/model"
+import "github.com/hyperremix/economy-analyzer/backend/model"
 
 type ClassificationMap struct{}
 

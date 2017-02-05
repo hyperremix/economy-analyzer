@@ -3,8 +3,8 @@ package monthly
 import (
 	"net/url"
 
-	"github.com/hyperremix/economy-analyzer/api/server"
-	"github.com/hyperremix/economy-analyzer/application"
+	"github.com/hyperremix/economy-analyzer/backend/api/server"
+	"github.com/hyperremix/economy-analyzer/backend/application"
 )
 
 type MonthlyController struct {

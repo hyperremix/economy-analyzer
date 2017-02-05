@@ -7,7 +7,7 @@ import (
 
 	"strings"
 
-	"github.com/hyperremix/economy-analyzer/model"
+	"github.com/hyperremix/economy-analyzer/backend/model"
 )
 
 type TransactionMap struct{}

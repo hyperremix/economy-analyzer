@@ -4,9 +4,9 @@ import (
 	"sort"
 	"time"
 
-	"github.com/hyperremix/economy-analyzer/dataAccess/classification"
-	"github.com/hyperremix/economy-analyzer/dataAccess/transaction"
-	"github.com/hyperremix/economy-analyzer/model"
+	"github.com/hyperremix/economy-analyzer/backend/dataAccess/classification"
+	"github.com/hyperremix/economy-analyzer/backend/dataAccess/transaction"
+	"github.com/hyperremix/economy-analyzer/backend/model"
 )
 
 type MonthlyFacade struct{}

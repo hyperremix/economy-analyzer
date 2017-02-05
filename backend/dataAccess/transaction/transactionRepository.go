@@ -6,7 +6,7 @@ import (
 
 	"log"
 
-	"github.com/hyperremix/economy-analyzer/model"
+	"github.com/hyperremix/economy-analyzer/backend/model"
 )
 
 const repositoryPath string = "C:\\Users\\fredr_000\\goplayground\\src\\github.com\\hyperremix\\economy-analyzer\\transactions.csv"

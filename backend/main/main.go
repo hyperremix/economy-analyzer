@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/hyperremix/economy-analyzer/api/monthly"
-	"github.com/hyperremix/economy-analyzer/api/server"
-	"github.com/hyperremix/economy-analyzer/api/version"
+	"github.com/hyperremix/economy-analyzer/backend/api/monthly"
+	"github.com/hyperremix/economy-analyzer/backend/api/server"
+	"github.com/hyperremix/economy-analyzer/backend/api/version"
 )
 
 func main() {
