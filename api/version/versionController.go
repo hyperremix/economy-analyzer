@@ -3,14 +3,14 @@ package version
 import (
 	"net/url"
 
-	"github.com/hyperremix/economy-analyzer/api"
+	"github.com/hyperremix/economy-analyzer/api/server"
 )
 
 //VersionController responsible for the version resource
 type VersionController struct {
-	api.PostNotSupported
-	api.PutNotSupported
-	api.DeleteNotSupported
+	server.PostNotSupported
+	server.PutNotSupported
+	server.DeleteNotSupported
 }
 
 //Get returns the current version of the application

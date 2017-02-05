@@ -1,15 +1,14 @@
 package main
 
 import (
-	"github.com/hyperremix/economy-analyzer/api"
-	"github.com/hyperremix/economy-analyzer/version"
+	"github.com/hyperremix/economy-analyzer/api/monthly"
+	"github.com/hyperremix/economy-analyzer/api/server"
+	"github.com/hyperremix/economy-analyzer/api/version"
 )
 
 func main() {
-
-	versionController := new(version.VersionController)
-
-	var api = new(api.API)
-	api.AddController(versionController, "/info/version")
+	var api = new(server.API)
+	api.AddController(new(version.VersionController), "/info/version")
+	api.AddController(new(monthly.MonthlyController), "/monthlies")
 	api.Start(3000)
 }
