@@ -59,6 +59,7 @@ func (api *API) controller(controller Controller) http.HandlerFunc {
 			rw.WriteHeader(500)
 		}
 
+		rw.Header().Add("Access-Control-Allow-Origin", "*")
 		rw.WriteHeader(code)
 		rw.Write(content)
 	}
