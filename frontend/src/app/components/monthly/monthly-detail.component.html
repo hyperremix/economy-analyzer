@@ -1,0 +1,20 @@
+<div class="jumbotron">
+    <h1>{{monthly.Month | month}}</h1>
+    <p>Last Month Balance: {{monthly.LastMonthBalance | currency}}</p>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Client</th>
+            <th>Amount</th>
+            <th>Classification</th>
+        </tr>
+        </thead>
+        <tr *ngFor="let classifiedTransaction of monthly.ClassifiedTransactions | mapToIterable">
+        <td>{{classifiedTransaction.Date | date}}</td>
+        <td>{{classifiedTransaction.Client}}</td>
+        <td>{{classifiedTransaction.Amount | currency}}</td>
+        <td>{{classifiedTransaction.Classification}}</td>
+        </tr>
+    </table>
+</div>
