@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Monthly } from './components/monthly/monthly'
+import { Monthly } from './model/monthly'
 import { MonthlyService } from './components/monthly/monthly.service'
 
 @Component({

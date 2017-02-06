@@ -8,7 +8,6 @@ import { MonthlyDetailComponent } from './components/monthly/monthly-detail.comp
 
 import { MonthlyService } from './components/monthly/monthly.service';
 
-import { MapToIterablePipe } from './pipes/mapToIterablePipe'
 import { CurrencyPipe } from './pipes/currencyPipe'
 import { MonthPipe } from './pipes/monthPipe'
 import { DatePipe } from './pipes/datePipe'
@@ -17,7 +16,6 @@ import { DatePipe } from './pipes/datePipe'
   declarations: [
     AppComponent,
     MonthlyDetailComponent,
-    MapToIterablePipe,
     CurrencyPipe,
     MonthPipe,
     DatePipe
@@ -28,7 +26,6 @@ import { DatePipe } from './pipes/datePipe'
     HttpModule
   ],
   exports: [
-    MapToIterablePipe,
     CurrencyPipe,
     MonthPipe,
     DatePipe

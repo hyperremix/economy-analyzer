@@ -1,20 +1,35 @@
 <div class="jumbotron">
     <h1>{{monthly.Month | month}}</h1>
-    <p>Last Month Balance: {{monthly.LastMonthBalance | currency}}</p>
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>Date</th>
-            <th>Client</th>
-            <th>Amount</th>
-            <th>Classification</th>
-        </tr>
-        </thead>
-        <tr *ngFor="let classifiedTransaction of monthly.ClassifiedTransactions | mapToIterable">
-        <td>{{classifiedTransaction.Date | date}}</td>
-        <td>{{classifiedTransaction.Client}}</td>
-        <td>{{classifiedTransaction.Amount | currency}}</td>
-        <td>{{classifiedTransaction.Classification}}</td>
-        </tr>
-    </table>
+    <p>Balance: {{balance | currency}}</p>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-8">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Client</th>
+                        <th>Amount</th>
+                        <th>Classification</th>
+                    </tr>
+                </thead>
+                <tr *ngFor="let classifiedTransaction of classifiedTransactions">
+                    <td>{{classifiedTransaction.Date | date}}</td>
+                    <td>{{classifiedTransaction.Client}}</td>
+                    <td>{{classifiedTransaction.Amount | currency}}</td>
+                    <td>{{classifiedTransaction.Classification}}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-xs-6 col-md-4">
+            <div class="panel panel-default" *ngFor="let classifiedSum of classificationSums">
+                <div class="panel-heading">
+                    {{classifiedSum.Classification}}
+                </div>
+                <div class="panel-body">
+                    {{classifiedSum.Sum | currency}}
+                </div>
+            </div>
+        </div>
+    </div>
+    
 </div>

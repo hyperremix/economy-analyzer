@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Monthly } from './monthly'
+import { Monthly } from './../../model/monthly'
 import { Headers, Http } from '@angular/http'
 
 import 'rxjs/add/operator/toPromise';
