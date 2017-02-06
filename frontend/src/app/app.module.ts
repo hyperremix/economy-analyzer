@@ -3,8 +3,11 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import { ChartsModule } from 'ng2-charts';
+
 import { AppComponent } from './app.component';
 import { MonthlyDetailComponent } from './components/monthly/monthly-detail.component'
+import { MonthlyDoughnutChartComponent } from './components/monthly/monthly-doughnut-chart.component'
 
 import { MonthlyService } from './components/monthly/monthly.service';
 
@@ -16,6 +19,7 @@ import { DatePipe } from './pipes/datePipe'
   declarations: [
     AppComponent,
     MonthlyDetailComponent,
+    MonthlyDoughnutChartComponent,
     CurrencyPipe,
     MonthPipe,
     DatePipe
@@ -23,7 +27,8 @@ import { DatePipe } from './pipes/datePipe'
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    ChartsModule
   ],
   exports: [
     CurrencyPipe,

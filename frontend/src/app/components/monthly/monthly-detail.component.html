@@ -21,15 +21,19 @@
             </table>
         </div>
         <div class="col-xs-6 col-md-4">
-            <div class="panel panel-default" *ngFor="let classifiedSum of classificationSums">
+            <div class="panel panel-default" *ngFor="let classificationSum of classificationSums">
                 <div class="panel-heading">
-                    {{classifiedSum.Classification}}
+                    {{classificationSum.Classification}}
                 </div>
                 <div class="panel-body">
-                    {{classifiedSum.Sum | currency}}
+                    {{classificationSum.Sum | currency}}
                 </div>
             </div>
         </div>
     </div>
-    
+    <div class="row">
+        <div class="col-xs-6">
+            <monthly-doughnut-chart [classificationSums]="classificationSums" [balance]="balance"></monthly-doughnut-chart>
+        </div>
+    </div>
 </div>
