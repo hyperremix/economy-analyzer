@@ -14,7 +14,7 @@ type VersionController struct {
 }
 
 //Get returns the current version of the application
-func (VersionController) Get(values url.Values) (int, interface{}) {
+func (versionController *VersionController) Get(values url.Values) (int, interface{}) {
 	data := map[string]string{"version": "0.1.0"}
 	return 200, data
 }

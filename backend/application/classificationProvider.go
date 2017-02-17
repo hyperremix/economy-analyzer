@@ -6,9 +6,9 @@ import (
 	"github.com/hyperremix/economy-analyzer/backend/model"
 )
 
-type ClassificationProvider struct{}
+type classificationProvider struct{}
 
-func (classificationProvider *ClassificationProvider) Get(transaction model.Transaction, classifications []model.Classification) model.ClassificationType {
+func (classificationProvider *classificationProvider) Get(transaction model.Transaction, classifications []model.Classification) model.ClassificationType {
 	for _, classification := range classifications {
 		if strings.Contains(transaction.Client, classification.Client) && strings.Contains(transaction.Purpose, classification.Purpose) {
 			return classification.Type

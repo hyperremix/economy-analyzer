@@ -11,8 +11,13 @@ type MonthlyController struct {
 	server.PostNotSupported
 	server.PutNotSupported
 	server.DeleteNotSupported
+	monthlyFacade *application.MonthlyFacade
 }
 
-func (MonthlyController) Get(values url.Values) (int, interface{}) {
+func NewMonthlyController() *MonthlyController {
+	return &MonthlyController{monthlyFacade: application.NewMonthlyFacade()}
+}
+
+func (monthlyController *MonthlyController) Get(values url.Values) (int, interface{}) {
 	return 200, new(application.MonthlyFacade).Find()
 }

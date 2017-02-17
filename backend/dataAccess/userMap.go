@@ -1,10 +1,10 @@
-package user
+package dataAccess
 
 import "github.com/hyperremix/economy-analyzer/backend/model"
 
-type UserMap struct{}
+type userMap struct{}
 
-func (userMap *UserMap) TransformMany(records [][]string) []model.User {
+func (userMap *userMap) TransformMany(records [][]string) []model.User {
 
 	var users = make([]model.User, len(records))
 
@@ -15,6 +15,6 @@ func (userMap *UserMap) TransformMany(records [][]string) []model.User {
 	return users
 }
 
-func (userMap *UserMap) Transform(record []string) model.User {
+func (userMap *userMap) Transform(record []string) model.User {
 	return model.User{Username: record[0], HashedPassword: []byte(record[1])}
 }

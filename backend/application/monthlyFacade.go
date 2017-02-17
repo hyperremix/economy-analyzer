@@ -4,18 +4,23 @@ import (
 	"sort"
 	"time"
 
-	"github.com/hyperremix/economy-analyzer/backend/dataAccess/classification"
-	"github.com/hyperremix/economy-analyzer/backend/dataAccess/transaction"
+	"github.com/hyperremix/economy-analyzer/backend/dataAccess"
 	"github.com/hyperremix/economy-analyzer/backend/model"
 )
 
-type MonthlyFacade struct{}
+type MonthlyFacade struct {
+	classificationProvider   *classificationProvider
+	classificationRepository *dataAccess.ClassificationRepository
+	transactionRepository    *dataAccess.TransactionRepository
+}
+
+func NewMonthlyFacade() *MonthlyFacade {
+	return &MonthlyFacade{classificationProvider: new(classificationProvider), classificationRepository: dataAccess.NewClassificationRepository(), transactionRepository: dataAccess.NewTransactionRepository()}
+}
 
 func (monthlyFacade *MonthlyFacade) Find() []model.Monthly {
-	classificationProvider := new(ClassificationProvider)
-
-	classifications := new(classification.ClassificationRepository).Find()
-	transactions := new(transaction.TransactionRepository).Find()
+	classifications := monthlyFacade.classificationRepository.Find()
+	transactions := monthlyFacade.transactionRepository.Find()
 	sort.Sort(model.ByDate(transactions))
 
 	currentDate := transactions[0].Date
@@ -35,7 +40,7 @@ func (monthlyFacade *MonthlyFacade) Find() []model.Monthly {
 		}
 
 		currentDate = transactionDate
-		transactionType := classificationProvider.Get(transaction, classifications)
+		transactionType := monthlyFacade.classificationProvider.Get(transaction, classifications)
 
 		if _, ok := classifiedTransactions[transactionType]; !ok {
 			classifiedTransactions[transactionType] = []model.Transaction{transaction}

@@ -1,4 +1,4 @@
-package token
+package dataAccess
 
 import (
 	"fmt"
@@ -7,9 +7,9 @@ import (
 	"github.com/hyperremix/economy-analyzer/backend/model"
 )
 
-type TokenMap struct{}
+type tokenMap struct{}
 
-func (tokenMap *TokenMap) TransformMany(records [][]string) []model.Token {
+func (tokenMap *tokenMap) TransformMany(records [][]string) []model.Token {
 
 	var tokens = make([]model.Token, len(records))
 
@@ -20,7 +20,7 @@ func (tokenMap *TokenMap) TransformMany(records [][]string) []model.Token {
 	return tokens
 }
 
-func (tokenMap *TokenMap) Transform(record []string) model.Token {
+func (tokenMap *tokenMap) Transform(record []string) model.Token {
 
 	t, err := time.Parse("02.01.2006", record[1])
 

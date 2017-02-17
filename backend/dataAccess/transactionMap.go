@@ -1,4 +1,4 @@
-package transaction
+package dataAccess
 
 import (
 	"fmt"
@@ -10,9 +10,9 @@ import (
 	"github.com/hyperremix/economy-analyzer/backend/model"
 )
 
-type TransactionMap struct{}
+type transactionMap struct{}
 
-func (transactionMap *TransactionMap) TransformMany(records [][]string) []model.Transaction {
+func (transactionMap *transactionMap) TransformMany(records [][]string) []model.Transaction {
 
 	var transactions = make([]model.Transaction, len(records))
 
@@ -23,7 +23,7 @@ func (transactionMap *TransactionMap) TransformMany(records [][]string) []model.
 	return transactions
 }
 
-func (transactionMap *TransactionMap) Transform(record []string) model.Transaction {
+func (transactionMap *transactionMap) Transform(record []string) model.Transaction {
 
 	parseableFloat := getGolangFloatString(record[7])
 	amount, err := strconv.ParseFloat(parseableFloat, 64)

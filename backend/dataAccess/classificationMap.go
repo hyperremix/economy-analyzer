@@ -1,10 +1,10 @@
-package classification
+package dataAccess
 
 import "github.com/hyperremix/economy-analyzer/backend/model"
 
-type ClassificationMap struct{}
+type classificationMap struct{}
 
-func (classificationMap *ClassificationMap) TransformMany(records [][]string) []model.Classification {
+func (classificationMap *classificationMap) TransformMany(records [][]string) []model.Classification {
 
 	var classifications = make([]model.Classification, len(records))
 
@@ -15,6 +15,6 @@ func (classificationMap *ClassificationMap) TransformMany(records [][]string) []
 	return classifications
 }
 
-func (classificationMap *ClassificationMap) Transform(record []string) model.Classification {
+func (classificationMap *classificationMap) Transform(record []string) model.Classification {
 	return model.Classification{Client: record[0], Purpose: record[1], Type: model.ClassificationType(record[2])}
 }

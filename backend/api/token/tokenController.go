@@ -8,20 +8,26 @@ import (
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/hyperremix/economy-analyzer/backend/api/server"
-	"github.com/hyperremix/economy-analyzer/backend/dataAccess/user"
+	"github.com/hyperremix/economy-analyzer/backend/dataAccess"
 	"github.com/hyperremix/economy-analyzer/backend/model"
 )
 
-type TokenController struct {
+// TODO: Change this
+const key = "ChangeThis"
+
+type tokenController struct {
 	server.GetNotSupported
 	server.PutNotSupported
 	server.DeleteNotSupported
+	userRepository *dataAccess.UserRepository
 }
 
-const key = "ChangeThis"
+func NewTokenController() *tokenController {
+	return &tokenController{userRepository: dataAccess.NewUserRepository()}
+}
 
-func (TokenController) Post(values url.Values) (int, interface{}) {
-	user := new(user.UserRepository).Find()
+func (tokenController *tokenController) Post(values url.Values) (int, interface{}) {
+	user := tokenController.userRepository.Find()
 
 	if err := bcrypt.CompareHashAndPassword(user[0].HashedPassword, []byte(values.Get("password"))); err != nil {
 		return 401, ""

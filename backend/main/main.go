@@ -10,7 +10,7 @@ import (
 func main() {
 	var api = new(server.API)
 	api.AddController(new(version.VersionController), "/info/version")
-	api.AddController(new(monthly.MonthlyController), "/monthlies")
-	api.AddController(new(token.TokenController), "/token")
+	api.AddController(monthly.NewMonthlyController(), "/monthlies")
+	api.AddController(token.NewTokenController(), "/token")
 	api.Start(3000)
 }
