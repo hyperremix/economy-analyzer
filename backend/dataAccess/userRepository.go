@@ -1,41 +1,16 @@
 package dataAccess
 
-import (
-	"encoding/csv"
-	"os"
+import "github.com/hyperremix/economy-analyzer/backend/model"
 
-	"log"
-
-	"github.com/hyperremix/economy-analyzer/backend/model"
-)
-
-type UserRepository struct {
-	userMap *userMap
-}
+type UserRepository struct{}
 
 func NewUserRepository() *UserRepository {
-	return &UserRepository{userMap: new(userMap)}
+	return new(UserRepository)
 }
 
-func (UserRepository *UserRepository) Find() []model.User {
-	fileReader, err := os.Open("C:\\Users\\fredr_000\\goplayground\\src\\github.com\\hyperremix\\economy-analyzer\\user.csv")
+func (UserRepository *UserRepository) FindMany() []model.User {
+	var results []model.User
 
-	if err != nil {
-		log.Fatal(err)
-		return make([]model.User, 0)
-	}
-
-	reader := csv.NewReader(fileReader)
-	reader.Comma = ';'
-
-	reader.Read()
-
-	records, err := reader.ReadAll()
-
-	if err != nil {
-		log.Fatal(err)
-		return make([]model.User, 0)
-	}
-
-	return UserRepository.userMap.TransformMany(records)
+	findMany("users", &results)
+	return results
 }

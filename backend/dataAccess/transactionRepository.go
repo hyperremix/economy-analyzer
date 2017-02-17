@@ -1,41 +1,16 @@
 package dataAccess
 
-import (
-	"encoding/csv"
-	"os"
+import "github.com/hyperremix/economy-analyzer/backend/model"
 
-	"log"
-
-	"github.com/hyperremix/economy-analyzer/backend/model"
-)
-
-type TransactionRepository struct {
-	transactionMap *transactionMap
-}
+type TransactionRepository struct{}
 
 func NewTransactionRepository() *TransactionRepository {
-	return &TransactionRepository{transactionMap: new(transactionMap)}
+	return new(TransactionRepository)
 }
 
-func (TransactionRepository *TransactionRepository) Find() []model.Transaction {
-	fileReader, err := os.Open("C:\\Users\\fredr_000\\goplayground\\src\\github.com\\hyperremix\\economy-analyzer\\transactions.csv")
+func (TransactionRepository *TransactionRepository) FindMany() []model.Transaction {
+	var results []model.Transaction
 
-	if err != nil {
-		log.Fatal(err)
-		return make([]model.Transaction, 0)
-	}
-
-	reader := csv.NewReader(fileReader)
-	reader.Comma = ';'
-
-	reader.Read()
-
-	records, err := reader.ReadAll()
-
-	if err != nil {
-		log.Fatal(err)
-		return make([]model.Transaction, 0)
-	}
-
-	return TransactionRepository.transactionMap.TransformMany(records)
+	findMany("transactions", &results)
+	return results
 }

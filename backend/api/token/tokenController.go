@@ -27,7 +27,7 @@ func NewTokenController() *tokenController {
 }
 
 func (tokenController *tokenController) Post(values url.Values) (int, interface{}) {
-	user := tokenController.userRepository.Find()
+	user := tokenController.userRepository.FindMany()
 
 	if err := bcrypt.CompareHashAndPassword(user[0].HashedPassword, []byte(values.Get("password"))); err != nil {
 		return 401, ""

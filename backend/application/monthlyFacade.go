@@ -19,8 +19,8 @@ func NewMonthlyFacade() *MonthlyFacade {
 }
 
 func (monthlyFacade *MonthlyFacade) Find() []model.Monthly {
-	classifications := monthlyFacade.classificationRepository.Find()
-	transactions := monthlyFacade.transactionRepository.Find()
+	classifications := monthlyFacade.classificationRepository.FindMany()
+	transactions := monthlyFacade.transactionRepository.FindMany()
 	sort.Sort(model.ByDate(transactions))
 
 	currentDate := transactions[0].Date

@@ -1,41 +1,16 @@
 package dataAccess
 
-import (
-	"encoding/csv"
-	"os"
+import "github.com/hyperremix/economy-analyzer/backend/model"
 
-	"log"
-
-	"github.com/hyperremix/economy-analyzer/backend/model"
-)
-
-type TokenRepository struct {
-	tokenMap *tokenMap
-}
+type TokenRepository struct{}
 
 func NewTokenRepository() *TokenRepository {
-	return &TokenRepository{tokenMap: new(tokenMap)}
+	return new(TokenRepository)
 }
 
-func (TokenRepository *TokenRepository) Find() []model.Token {
-	fileReader, err := os.Open("C:\\Tokens\\fredr_000\\goplayground\\src\\github.com\\hyperremix\\economy-analyzer\\token.csv")
+func (TokenRepository *TokenRepository) FindMany() []model.Token {
+	var results []model.Token
 
-	if err != nil {
-		log.Fatal(err)
-		return make([]model.Token, 0)
-	}
-
-	reader := csv.NewReader(fileReader)
-	reader.Comma = ';'
-
-	reader.Read()
-
-	records, err := reader.ReadAll()
-
-	if err != nil {
-		log.Fatal(err)
-		return make([]model.Token, 0)
-	}
-
-	return TokenRepository.tokenMap.TransformMany(records)
+	findMany("tokens", &results)
+	return results
 }
