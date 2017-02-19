@@ -1,8 +1,13 @@
 package model
 
-import "time"
+import (
+	"time"
+
+	"gopkg.in/mgo.v2/bson"
+)
 
 type Transaction struct {
+	ID      bson.ObjectId `bson:"_id,omitempty"`
 	Amount  float64
 	Client  string
 	Date    time.Time

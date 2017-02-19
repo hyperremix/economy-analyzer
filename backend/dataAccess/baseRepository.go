@@ -1,8 +1,10 @@
 package dataAccess
 
 import (
+	"log"
+	"os"
+
 	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
 )
 
 const db = "ea"
@@ -15,7 +17,7 @@ func findMany(collectionName string, results interface{}) {
 
 	collection := session.DB(db).C(collectionName)
 
-	err := collection.Find(bson.M{}).All(results)
+	err := collection.Find(nil).All(results)
 
 	if err != nil {
 		panic(err)
@@ -23,7 +25,7 @@ func findMany(collectionName string, results interface{}) {
 }
 
 func getSession() *mgo.Session {
-	if session != nil {
+	if session == nil {
 		setSession()
 	}
 
@@ -32,6 +34,9 @@ func getSession() *mgo.Session {
 
 func setSession() {
 	s, err := mgo.Dial("mongodb://localhost")
+	s.SetMode(mgo.Monotonic, true)
+
+	mgo.SetLogger(log.New(os.Stdout, "", log.Ldate|log.Ltime|log.Lshortfile))
 
 	if err != nil {
 		panic(err)
