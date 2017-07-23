@@ -14,6 +14,10 @@ type Transaction struct {
 	Purpose string
 }
 
+func (t Transaction) GetTransactionMonth() time.Time {
+	return time.Date(t.Date.Year(), t.Date.Month(), 1, 0, 0, 0, 0, time.UTC)
+}
+
 type ByDate []Transaction
 
 func (a ByDate) Len() int {
