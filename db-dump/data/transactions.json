@@ -1,0 +1,44 @@
+{
+	"_id": {
+		"$oid": "58ab2dd5771194578e24f545"
+	},
+	"date": {
+		"$date": "2017-01-25T00:00:00.000Z"
+	},
+	"client": "Netlight",
+	"purpose": "",
+	"amount": 1000.0
+}
+{
+	"_id": {
+		"$oid": "58ab2e21771194578e24f546"
+	},
+	"date": {
+		"$date": "2017-01-25T00:00:00.000Z"
+	},
+	"client": "Edeka",
+	"purpose": "",
+	"amount": -100.0
+}
+{
+	"_id": {
+		"$oid": "58ab2e3c771194578e24f547"
+	},
+	"date": {
+		"$date": "2017-01-25T00:00:00.000Z"
+	},
+	"client": "PayPal",
+	"purpose": "",
+	"amount": -100.0
+}
+{
+	"_id": {
+		"$oid": "58ab36c2aa071e018fef3107"
+	},
+	"date": {
+		"$date": "2017-02-01T00:00:00.000Z"
+	},
+	"client": "Edeka",
+	"purpose": "",
+	"amount": -1
+}

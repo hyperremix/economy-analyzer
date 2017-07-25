@@ -1,0 +1,24 @@
+{
+	"_id": {
+		"$oid": "58ab2bfeaa071e018fef2e95"
+	},
+	"client": "Netlight",
+	"purpose": "",
+	"type": "Salary"
+}
+{
+	"_id": {
+		"$oid": "58ab2c10aa071e018fef2e97"
+	},
+	"client": "Edeka",
+	"purpose": "",
+	"type": "Food"
+}
+{
+	"_id": {
+		"$oid": "58ab2c36aa071e018fef2e9f"
+	},
+	"client": "PayPal",
+	"purpose": "",
+	"type": "Miscellaneous"
+}
