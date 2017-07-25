@@ -26,3 +26,7 @@ func (m ClassifiedTransactionsMap) Sum() (sum float64) {
 
 	return
 }
+
+func (m ClassifiedTransactionsMap) GetRawMap() map[ClassificationType][]Transaction {
+	return m.classifiedTransactions
+}

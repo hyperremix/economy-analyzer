@@ -19,5 +19,7 @@ func NewMonthlyController() *MonthlyController {
 }
 
 func (mc *MonthlyController) Get(values url.Values) (int, interface{}) {
-	return 200, mc.monthlyFacade.Find()
+	monthlies := mc.monthlyFacade.Find()
+
+	return 200, ManyNewMonthlyApiModels(monthlies)
 }
