@@ -14,8 +14,8 @@ func NewTransactionFacade() *transactionFacade {
 	return &transactionFacade{transactionRepository: dataAccess.NewTransactionRepository()}
 }
 
-func (transactionFacade *transactionFacade) GetMonthlyTransactions() map[time.Time][]model.Transaction {
-	transactions := transactionFacade.transactionRepository.FindMany()
+func (tf *transactionFacade) GetMonthlyTransactions() map[time.Time][]model.Transaction {
+	transactions := tf.transactionRepository.FindMany()
 
 	monthlyTransactions := make(map[time.Time][]model.Transaction)
 
