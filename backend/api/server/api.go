@@ -3,7 +3,10 @@ package server
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/handlers"
+	"github.com/op/go-logging"
 	"net/http"
+	"os"
 )
 
 const (
@@ -20,20 +23,25 @@ const (
 //API defines an API
 type API struct{}
 
+var log = logging.MustGetLogger("api")
+
 //Start starts the api on the given port
 func (api *API) Start(port int) {
 	portString := fmt.Sprintf(":%d", port)
-	http.ListenAndServe(portString, nil)
+
+	log.Infof("Listening to port %d", port)
+	http.ListenAndServe(portString, handlers.LoggingHandler(os.Stdout, http.DefaultServeMux))
 }
 
 //AddController adds a GetHandler to a specific path
 func (api *API) AddController(controller Controller, path string) {
 	http.HandleFunc("/api"+path, api.controller(controller))
+
+	log.Infof("Added controller for endpoint %s", path)
 }
 
 func (api *API) controller(controller Controller) http.HandlerFunc {
 	return func(rw http.ResponseWriter, request *http.Request) {
-
 		var data interface{}
 		var code int
 
