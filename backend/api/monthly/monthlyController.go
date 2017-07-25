@@ -18,6 +18,6 @@ func NewMonthlyController() *MonthlyController {
 	return &MonthlyController{monthlyFacade: application.NewMonthlyFacade()}
 }
 
-func (monthlyController *MonthlyController) Get(values url.Values) (int, interface{}) {
-	return 200, new(application.MonthlyFacade).Find()
+func (mc *MonthlyController) Get(values url.Values) (int, interface{}) {
+	return 200, mc.monthlyFacade.Find()
 }
