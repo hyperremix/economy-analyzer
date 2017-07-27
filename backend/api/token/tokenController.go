@@ -26,9 +26,7 @@ func RegisterTokenController(router *gin.Engine, routePrefix string) {
 		userRepository:  dataAccess.NewUserRepository(),
 		tokenRepository: dataAccess.NewTokenRepository()}
 
-	basicAuthMiddlewareProvider := middleware.NewBasicAuthMiddleWareProvider()
-	endpoint := router.Group(routePrefix+path, basicAuthMiddlewareProvider.Get())
-
+	endpoint := router.Group(routePrefix+path, middleware.BasicAuthMiddleWare(tc.userRepository))
 	endpoint.POST("", tc.Post())
 }
 

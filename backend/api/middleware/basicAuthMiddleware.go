@@ -11,26 +11,18 @@ import (
 	"strings"
 )
 
-type basicAuthMiddleWareProvider struct {
-	userRepository *dataAccess.UserRepository
-}
-
 const AuthUserIDKey = "userID"
 
-func NewBasicAuthMiddleWareProvider() *basicAuthMiddleWareProvider {
-	return &basicAuthMiddleWareProvider{userRepository: dataAccess.NewUserRepository()}
-}
-
-func (bm *basicAuthMiddleWareProvider) Get() gin.HandlerFunc {
+func BasicAuthMiddleWare(userRepository *dataAccess.UserRepository) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		value := c.GetHeader("Authorization")
 
-		username, password, err := bm.parseAuthorizationHeader(value)
+		username, password, err := parseAuthorizationHeader(value)
 		if err != nil {
 			c.AbortWithError(http.StatusUnauthorized, err)
 		}
 
-		userID, err := bm.validateUser(username, password)
+		userID, err := validateUser(userRepository, username, password)
 		if err != nil {
 			c.AbortWithError(http.StatusUnauthorized, err)
 		}
@@ -39,7 +31,7 @@ func (bm *basicAuthMiddleWareProvider) Get() gin.HandlerFunc {
 	}
 }
 
-func (bm *basicAuthMiddleWareProvider) parseAuthorizationHeader(value string) (username, password string, err error) {
+func parseAuthorizationHeader(value string) (username, password string, err error) {
 	const headerSeparator = " "
 	const valueSeparator = ":"
 	const expectedParts = 2
@@ -64,8 +56,8 @@ func (bm *basicAuthMiddleWareProvider) parseAuthorizationHeader(value string) (u
 	return
 }
 
-func (bm *basicAuthMiddleWareProvider) validateUser(username string, password string) (userID bson.ObjectId, err error) {
-	user, err := bm.userRepository.FindSingleByUsername(username)
+func validateUser(userRepository *dataAccess.UserRepository, username string, password string) (userID bson.ObjectId, err error) {
+	user, err := userRepository.FindSingleByUsername(username)
 	if err != nil {
 		return
 	}
