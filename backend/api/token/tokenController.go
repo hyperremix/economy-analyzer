@@ -43,7 +43,7 @@ func (tc *tokenController) createToken(c *gin.Context, tokenRequest tokenRequest
 		return
 	}
 
-	if err := bcrypt.CompareHashAndPassword(user.HashedPassword, []byte(tokenRequest.ClientSecret)); err != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(tokenRequest.ClientSecret)); err != nil {
 		c.JSON(http.StatusUnauthorized, nil)
 		return
 	}

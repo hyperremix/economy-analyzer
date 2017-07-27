@@ -37,7 +37,7 @@ func (rc *RegistrationController) registerUser(c *gin.Context, request registrat
 		return
 	}
 
-	user := model.User{Username: request.Username, HashedPassword: hashedPassword}
+	user := model.User{Username: request.Username, HashedPassword: string(hashedPassword)}
 	if err := rc.userRepository.Insert(user); err != nil {
 		c.JSON(http.StatusInternalServerError, nil)
 		return
