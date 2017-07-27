@@ -2,20 +2,25 @@ package monthly
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/hyperremix/economy-analyzer/backend/api/middleware"
 	"github.com/hyperremix/economy-analyzer/backend/application"
 	"net/http"
 )
 
 type MonthlyController struct {
-	monthlyFacade *application.MonthlyFacade
+	monthlyFacade         *application.MonthlyFacade
+	jwtMiddlewareProvider *middleware.JWTMiddlewareProvider
 }
 
 const path = "/monthlies"
 
 func RegisterMonthlyController(router *gin.Engine, routePrefix string) {
-	mc := &MonthlyController{monthlyFacade: application.NewMonthlyFacade()}
+	mc := &MonthlyController{
+		monthlyFacade:         application.NewMonthlyFacade(),
+		jwtMiddlewareProvider: middleware.NewJWTMiddlewareProvider()}
 
-	router.GET(routePrefix+path, mc.Get())
+	endpoint := router.Group(routePrefix+path, mc.jwtMiddlewareProvider.Get())
+	endpoint.GET("", mc.Get())
 }
 
 func (mc *MonthlyController) Get() gin.HandlerFunc {

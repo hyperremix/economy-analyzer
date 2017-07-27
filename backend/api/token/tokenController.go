@@ -15,18 +15,20 @@ import (
 var key = []byte("ChangeThis")
 
 type tokenController struct {
-	userRepository  *dataAccess.UserRepository
-	tokenRepository *dataAccess.TokenRepository
+	userRepository              *dataAccess.UserRepository
+	tokenRepository             *dataAccess.TokenRepository
+	basicAuthMiddlewareProvider *middleware.BasicAuthMiddlewareProvider
 }
 
 const path = "/token"
 
 func RegisterTokenController(router *gin.Engine, routePrefix string) {
 	tc := &tokenController{
-		userRepository:  dataAccess.NewUserRepository(),
-		tokenRepository: dataAccess.NewTokenRepository()}
+		userRepository:              dataAccess.NewUserRepository(),
+		tokenRepository:             dataAccess.NewTokenRepository(),
+		basicAuthMiddlewareProvider: middleware.NewBasicAuthMiddlewareProvider()}
 
-	endpoint := router.Group(routePrefix+path, middleware.BasicAuthMiddleWare(tc.userRepository))
+	endpoint := router.Group(routePrefix+path, tc.basicAuthMiddlewareProvider.Get())
 	endpoint.POST("", tc.Post())
 }
 
