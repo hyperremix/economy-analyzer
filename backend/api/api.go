@@ -1,4 +1,4 @@
-package server
+package api
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ type API struct {
 
 const routePrefix = "/api"
 
-func NewAPI(router *gin.Engine) *API {
+func New(router *gin.Engine) *API {
 	return &API{router: router}
 }
 
