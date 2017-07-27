@@ -56,6 +56,7 @@ func (tc *tokenController) createToken(c *gin.Context, tokenRequest tokenRequest
 	}
 
 	token := model.Token{
+		UserID:      user.ID,
 		AccessToken: signedToken,
 		CreatedAt:   time.Now(),
 		ExpiresIn:   (time.Hour * 24).Seconds()}
