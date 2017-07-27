@@ -8,7 +8,8 @@ import (
 
 type Token struct {
 	ID          bson.ObjectId `bson:"_id,omitempty"`
+	UserID      bson.ObjectId `bson:"omitempty"`
 	AccessToken string
 	CreatedAt   time.Time
-	TokenType   string
+	ExpiresIn   float64
 }

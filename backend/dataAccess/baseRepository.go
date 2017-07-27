@@ -24,6 +24,26 @@ func findMany(collectionName string, results interface{}) {
 	}
 }
 
+func findSingle(collectionName string, query, result interface{}) (err error) {
+	session := getSession()
+	defer session.Close()
+
+	collection := session.DB(db).C(collectionName)
+
+	err = collection.Find(query).One(result)
+	return
+}
+
+func insert(collectionName string, doc interface{}) (err error) {
+	session := getSession()
+	defer session.Close()
+
+	collection := session.DB(db).C(collectionName)
+
+	err = collection.Insert(doc)
+	return
+}
+
 func getSession() *mgo.Session {
 	if session == nil {
 		setSession()

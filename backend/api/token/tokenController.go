@@ -1,35 +1,43 @@
 package token
 
 import (
-	"net/url"
-	"time"
-
-	"golang.org/x/crypto/bcrypt"
-
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/hyperremix/economy-analyzer/backend/api/server"
 	"github.com/hyperremix/economy-analyzer/backend/dataAccess"
 	"github.com/hyperremix/economy-analyzer/backend/model"
+	"golang.org/x/crypto/bcrypt"
+	"net/url"
+	"time"
 )
 
 // TODO: Change this
-const key = "ChangeThis"
+var key = []byte("ChangeThis")
 
 type tokenController struct {
 	server.GetNotSupported
 	server.PutNotSupported
 	server.DeleteNotSupported
-	userRepository *dataAccess.UserRepository
+	userRepository  *dataAccess.UserRepository
+	tokenRepository *dataAccess.TokenRepository
 }
 
 func NewTokenController() *tokenController {
-	return &tokenController{userRepository: dataAccess.NewUserRepository()}
+	return &tokenController{
+		userRepository:  dataAccess.NewUserRepository(),
+		tokenRepository: dataAccess.NewTokenRepository()}
 }
 
-func (tokenController *tokenController) Post(values url.Values) (int, interface{}) {
-	user := tokenController.userRepository.FindMany()
+func (tc *tokenController) Post(values url.Values) (int, interface{}) {
+	username := values.Get("client_id")
+	password := []byte(values.Get("client_secret"))
 
-	if err := bcrypt.CompareHashAndPassword(user[0].HashedPassword, []byte(values.Get("password"))); err != nil {
+	user, err := tc.userRepository.FindSingleByUsername(username)
+
+	if err != nil {
+		return 401, ""
+	}
+
+	if err := bcrypt.CompareHashAndPassword(user.HashedPassword, password); err != nil {
 		return 401, ""
 	}
 
@@ -39,9 +47,12 @@ func (tokenController *tokenController) Post(values url.Values) (int, interface{
 		return 500, ""
 	}
 
-	token := model.Token{AccessToken: signedToken, CreatedAt: time.Now(), TokenType: "bearer"}
+	token := model.Token{
+		AccessToken: signedToken,
+		CreatedAt:   time.Now(),
+		ExpiresIn:   (time.Hour * 24).Seconds()}
 
-	// TODO insert token in repository
+	tc.tokenRepository.Insert(token)
 
-	return 200, token
+	return 200, NewTokenApiModel(token)
 }

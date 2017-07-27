@@ -8,9 +8,7 @@ func NewTokenRepository() *TokenRepository {
 	return new(TokenRepository)
 }
 
-func (TokenRepository *TokenRepository) FindMany() []model.Token {
-	var results []model.Token
-
-	findMany("tokens", &results)
-	return results
+func (tr *TokenRepository) Insert(token model.Token) (err error) {
+	err = insert("tokens", token)
+	return
 }

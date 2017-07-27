@@ -62,13 +62,17 @@ func (api *API) controller(controller Controller) http.HandlerFunc {
 			return
 		}
 
-		content, err := json.Marshal(data)
-		if err != nil {
-			rw.WriteHeader(500)
+		if data != nil {
+			content, err := json.Marshal(data)
+			if err != nil {
+				rw.WriteHeader(500)
+			}
+
+			rw.Write(content)
 		}
 
 		rw.Header().Add("Access-Control-Allow-Origin", "*")
+		rw.Header().Add("Content-Type", "application/json")
 		rw.WriteHeader(code)
-		rw.Write(content)
 	}
 }
