@@ -44,6 +44,16 @@ func insert(collectionName string, doc interface{}) (err error) {
 	return
 }
 
+func upsert(collectionName string, query, doc interface{}) (err error) {
+	session := getSession()
+	defer session.Close()
+
+	collection := session.DB(db).C(collectionName)
+
+	_, err = collection.Upsert(query, doc)
+	return
+}
+
 func getSession() *mgo.Session {
 	if session == nil {
 		setSession()

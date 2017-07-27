@@ -61,7 +61,7 @@ func (tc *tokenController) createToken(c *gin.Context, tokenRequest tokenRequest
 		CreatedAt:   time.Now(),
 		ExpiresIn:   (time.Hour * 24).Seconds()}
 
-	tc.tokenRepository.Insert(token)
+	tc.tokenRepository.Upsert(token)
 
 	c.JSON(http.StatusCreated, NewTokenApiModel(token))
 }

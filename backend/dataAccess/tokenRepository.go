@@ -1,14 +1,19 @@
 package dataAccess
 
-import "github.com/hyperremix/economy-analyzer/backend/model"
+import (
+	"github.com/hyperremix/economy-analyzer/backend/model"
+	"gopkg.in/mgo.v2/bson"
+)
 
 type TokenRepository struct{}
+
+const collectionName = "tokens"
 
 func NewTokenRepository() *TokenRepository {
 	return new(TokenRepository)
 }
 
-func (tr *TokenRepository) Insert(token model.Token) (err error) {
-	err = insert("tokens", token)
+func (tr *TokenRepository) Upsert(token model.Token) (err error) {
+	err = upsert(collectionName, bson.M{"userid": token.UserID}, token)
 	return
 }
