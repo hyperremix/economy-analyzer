@@ -1,20 +1,19 @@
 package version
 
 import (
-	"net/url"
-
-	"github.com/hyperremix/economy-analyzer/backend/api/server"
+	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
-//VersionController responsible for the version resource
-type VersionController struct {
-	server.PostNotSupported
-	server.PutNotSupported
-	server.DeleteNotSupported
+const path = "/info/version"
+
+func RegisterVersionController(router *gin.Engine, routePrefix string) {
+	router.GET(routePrefix+path, get())
 }
 
-//Get returns the current version of the application
-func (versionController *VersionController) Get(values url.Values) (int, interface{}) {
-	data := map[string]string{"version": "0.1.0"}
-	return 200, data
+func get() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		data := map[string]string{"version": "0.1.0"}
+		c.JSON(http.StatusOK, data)
+	}
 }

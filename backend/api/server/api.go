@@ -1,78 +1,32 @@
 package server
 
 import (
-	"encoding/json"
 	"fmt"
-	"github.com/gorilla/handlers"
-	"github.com/op/go-logging"
-	"net/http"
-	"os"
+	"github.com/gin-gonic/gin"
+	"github.com/hyperremix/economy-analyzer/backend/api/monthly"
+	"github.com/hyperremix/economy-analyzer/backend/api/registration"
+	"github.com/hyperremix/economy-analyzer/backend/api/token"
+	"github.com/hyperremix/economy-analyzer/backend/api/version"
 )
 
-const (
-	//GET = "GET"
-	GET = "GET"
-	//POST = "POST"
-	POST = "POST"
-	//PUT = "PUT"
-	PUT = "PUT"
-	//DELETE = "DELETE"
-	DELETE = "DELETE"
-)
+type API struct {
+	router *gin.Engine
+}
 
-//API defines an API
-type API struct{}
+const routePrefix = "/api"
 
-var log = logging.MustGetLogger("api")
+func NewAPI(router *gin.Engine) *API {
+	return &API{router: router}
+}
 
-//Start starts the api on the given port
+func (api *API) RegisterControllers() {
+	monthly.RegisterMonthlyController(api.router, routePrefix)
+	registration.RegisterRegistrationController(api.router, routePrefix)
+	token.RegisterTokenController(api.router, routePrefix)
+	version.RegisterVersionController(api.router, routePrefix)
+}
+
 func (api *API) Start(port int) {
 	portString := fmt.Sprintf(":%d", port)
-
-	log.Infof("Listening to port %d", port)
-	http.ListenAndServe(portString, handlers.LoggingHandler(os.Stdout, http.DefaultServeMux))
-}
-
-//AddController adds a GetHandler to a specific path
-func (api *API) AddController(controller Controller, path string) {
-	http.HandleFunc("/api"+path, api.controller(controller))
-
-	log.Infof("Added controller for endpoint %s", path)
-}
-
-func (api *API) controller(controller Controller) http.HandlerFunc {
-	return func(rw http.ResponseWriter, request *http.Request) {
-		var data interface{}
-		var code int
-
-		request.ParseForm()
-		values := request.Form
-
-		switch request.Method {
-		case GET:
-			code, data = controller.Get(values)
-		case POST:
-			code, data = controller.Post(values)
-		case PUT:
-			code, data = controller.Put(values)
-		case DELETE:
-			code, data = controller.Delete(values)
-		default:
-			rw.WriteHeader(405)
-			return
-		}
-
-		if data != nil {
-			content, err := json.Marshal(data)
-			if err != nil {
-				rw.WriteHeader(500)
-			}
-
-			rw.Write(content)
-		}
-
-		rw.Header().Add("Access-Control-Allow-Origin", "*")
-		rw.Header().Add("Content-Type", "application/json")
-		rw.WriteHeader(code)
-	}
+	api.router.Run(portString)
 }

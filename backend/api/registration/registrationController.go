@@ -1,38 +1,47 @@
 package registration
 
 import (
-	"github.com/hyperremix/economy-analyzer/backend/api/server"
+	"github.com/gin-gonic/gin"
 	"github.com/hyperremix/economy-analyzer/backend/dataAccess"
 	"github.com/hyperremix/economy-analyzer/backend/model"
 	"golang.org/x/crypto/bcrypt"
-	"net/url"
+	"net/http"
 )
 
 type RegistrationController struct {
-	server.GetNotSupported
-	server.PutNotSupported
-	server.DeleteNotSupported
 	userRepository *dataAccess.UserRepository
 }
 
-func NewRegistrationController() *RegistrationController {
-	return &RegistrationController{userRepository: dataAccess.NewUserRepository()}
+const path = "/registration"
+
+func RegisterRegistrationController(router *gin.Engine, routePrefix string) {
+	rc := &RegistrationController{userRepository: dataAccess.NewUserRepository()}
+	router.POST(routePrefix+path, rc.Post())
+	return
 }
 
-func (rc *RegistrationController) Post(values url.Values) (int, interface{}) {
-	username := values.Get("username")
-	password := []byte(values.Get("password"))
+func (rc *RegistrationController) Post() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var registration registrationRequest
+		if err := c.BindJSON(&registration); err == nil {
+			rc.registerUser(c, registration)
+		}
+	}
+}
 
-	hashedPassword, err := bcrypt.GenerateFromPassword(password, bcrypt.DefaultCost)
+func (rc *RegistrationController) registerUser(c *gin.Context, request registrationRequest) {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.DefaultCost)
 
 	if err != nil {
-		return 500, ""
+		c.JSON(http.StatusInternalServerError, nil)
+		return
 	}
 
-	user := model.User{Username: username, HashedPassword: hashedPassword}
+	user := model.User{Username: request.Username, HashedPassword: hashedPassword}
 	if err := rc.userRepository.Insert(user); err != nil {
-		return 500, ""
+		c.JSON(http.StatusInternalServerError, nil)
+		return
 	}
 
-	return 201, nil
+	c.JSON(http.StatusCreated, nil)
 }

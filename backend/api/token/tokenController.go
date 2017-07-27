@@ -2,11 +2,11 @@ package token
 
 import (
 	jwt "github.com/dgrijalva/jwt-go"
-	"github.com/hyperremix/economy-analyzer/backend/api/server"
+	"github.com/gin-gonic/gin"
 	"github.com/hyperremix/economy-analyzer/backend/dataAccess"
 	"github.com/hyperremix/economy-analyzer/backend/model"
 	"golang.org/x/crypto/bcrypt"
-	"net/url"
+	"net/http"
 	"time"
 )
 
@@ -14,37 +14,45 @@ import (
 var key = []byte("ChangeThis")
 
 type tokenController struct {
-	server.GetNotSupported
-	server.PutNotSupported
-	server.DeleteNotSupported
 	userRepository  *dataAccess.UserRepository
 	tokenRepository *dataAccess.TokenRepository
 }
 
-func NewTokenController() *tokenController {
-	return &tokenController{
+const path = "/token"
+
+func RegisterTokenController(router *gin.Engine, routePrefix string) {
+	tc := &tokenController{
 		userRepository:  dataAccess.NewUserRepository(),
 		tokenRepository: dataAccess.NewTokenRepository()}
+	router.POST(routePrefix+path, tc.Post())
 }
 
-func (tc *tokenController) Post(values url.Values) (int, interface{}) {
-	username := values.Get("client_id")
-	password := []byte(values.Get("client_secret"))
-
-	user, err := tc.userRepository.FindSingleByUsername(username)
+func (tc *tokenController) Post() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var tokenRequest tokenRequest
+		if err := c.BindJSON(&tokenRequest); err == nil {
+			tc.createToken(c, tokenRequest)
+		}
+	}
+}
+func (tc *tokenController) createToken(c *gin.Context, tokenRequest tokenRequest) {
+	user, err := tc.userRepository.FindSingleByUsername(tokenRequest.ClientId)
 
 	if err != nil {
-		return 401, ""
+		c.JSON(http.StatusUnauthorized, nil)
+		return
 	}
 
-	if err := bcrypt.CompareHashAndPassword(user.HashedPassword, password); err != nil {
-		return 401, ""
+	if err := bcrypt.CompareHashAndPassword(user.HashedPassword, []byte(tokenRequest.ClientSecret)); err != nil {
+		c.JSON(http.StatusUnauthorized, nil)
+		return
 	}
 
 	signedToken, err := jwt.New(jwt.SigningMethodHS256).SignedString([]byte(key))
 
 	if err != nil {
-		return 500, ""
+		c.JSON(http.StatusInternalServerError, nil)
+		return
 	}
 
 	token := model.Token{
@@ -54,5 +62,5 @@ func (tc *tokenController) Post(values url.Values) (int, interface{}) {
 
 	tc.tokenRepository.Insert(token)
 
-	return 200, NewTokenApiModel(token)
+	c.JSON(http.StatusCreated, NewTokenApiModel(token))
 }
