@@ -14,6 +14,8 @@ type JWTMiddlewareProvider struct {
 	tokenRepository *dataAccess.TokenRepository
 }
 
+const AuthTokenKey = "token"
+
 func NewJWTMiddlewareProvider() *JWTMiddlewareProvider {
 	return &JWTMiddlewareProvider{tokenRepository: dataAccess.NewTokenRepository()}
 }
@@ -35,6 +37,8 @@ func (jp *JWTMiddlewareProvider) Get() gin.HandlerFunc {
 		if err := jp.validateToken(token); err != nil {
 			c.AbortWithStatus(http.StatusUnauthorized)
 		}
+
+		c.Set(AuthTokenKey, token)
 	}
 }
 

@@ -13,3 +13,7 @@ type Token struct {
 	CreatedAt   time.Time
 	ExpiresIn   float64
 }
+
+func (t *Token) Refresh() {
+	t.CreatedAt = time.Now()
+}
