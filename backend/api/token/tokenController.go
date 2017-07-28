@@ -20,7 +20,7 @@ type tokenController struct {
 	basicAuthMiddlewareProvider *middleware.BasicAuthMiddlewareProvider
 }
 
-const path = "/token"
+const path = "/auth/token"
 
 func RegisterTokenController(router *gin.Engine, routePrefix string) {
 	tc := &tokenController{
